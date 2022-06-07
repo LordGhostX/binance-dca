@@ -12,5 +12,5 @@
   },
   "amount": 1000,
   "fee": 0.15,
-  "testing": false
+  "testing": true
 }

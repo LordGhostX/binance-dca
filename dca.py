@@ -18,8 +18,12 @@ def place_order(ticker, amount):
         type=Client.ORDER_TYPE_MARKET,
         quoteOrderQty=round(amount, 3)
     )
-    print(
-        f"Amount Bought: {res['executedQty']}\nPrice: ${1 / float(res['executedQty']) * float(res['cummulativeQuoteQty'])}\nTotal Spent: ${res['cummulativeQuoteQty']}\n\n")
+
+    if config["testing"]:
+        print("Real orders cannot be made in testing mode")
+    else:
+        print(
+            f"Amount Bought: {res['executedQty']}\nPrice: ${1 / float(res['executedQty']) * float(res['cummulativeQuoteQty'])}\nTotal Spent: ${res['cummulativeQuoteQty']}\n\n")
 
 
 print(f"Purchase Amount: ${amount:.2f}\nFee Rate: ${fee / 100 * amount:.2f}\n")
