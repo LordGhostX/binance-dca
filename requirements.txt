@@ -1,0 +1,2 @@
+python_binance==1.0.16
+websockets==9.1

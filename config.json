@@ -1,0 +1,16 @@
+{
+  "keys": {
+    "api": "BINANCE_API_KEY",
+    "secret": "BINANCE_SECRET_KEY"
+  },
+  "coins": {
+    "ETH": 20,
+    "BTC": 20,
+    "SOL": 20,
+    "NEAR": 20,
+    "ATOM": 20
+  },
+  "amount": 1000,
+  "fee": 0.15,
+  "testing": false
+}
