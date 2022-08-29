@@ -6,6 +6,10 @@ amount, fee = config["amount"], config['fee']
 client = Client(config["keys"]["api"], config["keys"]["secret"])
 
 
+def fetch_balance(asset="USDT"):
+    return float(client.get_asset_balance(asset=asset)["free"])
+
+
 def place_order(ticker, amount):
     if config["testing"]:
         create_order = client.create_test_order
@@ -26,7 +30,20 @@ def place_order(ticker, amount):
             f"Amount Bought: {res['executedQty']}\nPrice: ${1 / float(res['executedQty']) * float(res['cummulativeQuoteQty'])}\nTotal Spent: ${res['cummulativeQuoteQty']}\n\n")
 
 
-print(f"Purchase Amount: ${amount:.2f}\nFee Rate: ${fee / 100 * amount:.2f}\n")
+try:
+    # check API key validity
+    balance = fetch_balance()
+    print("$USDT Balance:", balance)
+    print(
+        f"Purchase Amount: ${amount:.2f}\nFee Rate: ${fee / 100 * amount:.2f}\n")
+except:
+    exit("invalid binance API key or config settings")
+
+if amount > balance:
+    exit("insufficient $USDT balance to run DCA")
+
+if sum(config["coins"].values()) > 100:
+    exit("asset allocation cannot exceed 100%")
 
 coins = config["coins"]
 for coin in coins:
