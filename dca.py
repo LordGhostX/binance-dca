@@ -2,11 +2,11 @@ import json
 from binance.client import Client
 
 config = json.load(open("config.json"))
-amount, fee = config["amount"], config['fee']
+quote_asset, amount, fee = config["quote_asset"], config["amount"], config["fee"]
 client = Client(config["keys"]["api"], config["keys"]["secret"])
 
 
-def fetch_balance(asset="USDT"):
+def fetch_balance(asset):
     return float(client.get_asset_balance(asset=asset)["free"])
 
 
@@ -17,7 +17,7 @@ def place_order(ticker, amount):
         create_order = client.create_order
 
     res = create_order(
-        symbol=f"{ticker}USDT".upper(),
+        symbol=f"{ticker}{quote_asset}".upper(),
         side=Client.SIDE_BUY,
         type=Client.ORDER_TYPE_MARKET,
         quoteOrderQty=round(amount, 3)
@@ -26,21 +26,20 @@ def place_order(ticker, amount):
     if config["testing"]:
         print("Real orders cannot be made in testing mode")
     else:
-        print(
-            f"Amount Bought: {res['executedQty']}\nPrice: ${1 / float(res['executedQty']) * float(res['cummulativeQuoteQty'])}\nTotal Spent: ${res['cummulativeQuoteQty']}\n\n")
+        print(f"Amount Bought: {res['executedQty']}\nPrice: ${1 / float(res['executedQty']) * float(res['cummulativeQuoteQty'])}\nTotal Spent: ${res['cummulativeQuoteQty']}\n\n")
 
 
 try:
     # check API key validity
-    balance = fetch_balance()
-    print("$USDT Balance:", balance)
+    balance = fetch_balance(quote_asset)
+    print(f"${quote_asset} Balance:", balance)
     print(
         f"Purchase Amount: ${amount:.2f}\nFee Rate: ${fee / 100 * amount:.2f}\n")
 except:
     exit("invalid binance API key or config settings")
 
 if amount > balance:
-    exit("insufficient $USDT balance to run DCA")
+    exit(f"insufficient ${quote_asset} balance to run DCA")
 
 if sum(config["coins"].values()) > 100:
     exit("asset allocation cannot exceed 100%")

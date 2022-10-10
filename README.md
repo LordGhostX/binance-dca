@@ -12,6 +12,7 @@ You will need to add the following config variables to your `config.json` file t
 | keys.api | string | Your Binance `API key` |
 | keys.secret | string | Your Binance `SECRET key` |
 | coins | object | A key-value pair of coins the script should purchase and their allotted percentages of the total balance, e.g., `"BTC": 20` means `20%` of the total balance should be used to buy `$BTC` |
+| quote_asset | string | The quote asset to purchase the coins with, e.g., `USDT` means all the trades will be executed on `{{coin}}/USDT` market pairs |
 | amount | number | The total balance the script should spend on purchases, e.g., `1000` means the script should make all its purchases with `$1000` |
 | fee | number | A percentage value to account for Binance trading fees, e.g., `0.15` means the script should purchase an additional `0.15%` of the intended amount, so fees are deducted from the extras |
 | testing | boolean | An indicator of whether to run the script in testing mode or not. The script will only use real money when the value is set to `false` |

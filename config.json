@@ -10,6 +10,7 @@
     "NEAR": 20,
     "ATOM": 20
   },
+  "quote_asset": "USDT",
   "amount": 1000,
   "fee": 0.15,
   "testing": true
